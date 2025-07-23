@@ -1,0 +1,13 @@
+# version of the "map language" we are using.
+version: '3.8'
+
+# list all services.
+services:
+  # the API.
+  api:
+    # Build qa-dashboard-api
+    # Dockerfile is in this same folder (the ".").
+    build: .
+    # Connect port 8000 on my computer to port 8000 inside the API.
+    ports:
+      - "8000:8000"

@@ -1,0 +1,39 @@
+name: QA Dashboard CI
+
+on:
+  # Start when anyone pushes code to the "main" branch.
+  push:
+    branches: [ "main" ]
+  # Also if someone creates a "pull request" to the main branch.
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+ 
+  build-and-lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Step 1: Get a copy of our code.
+    - name: Checkout code
+      # Use a pre-built tool from GitHub's tool-shed called "checkout"
+      uses: actions/checkout@v4
+
+    # Step 2: Set up the correct version of Python for the robot to use.
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        # Use the same Python version we've been using.
+        python-version: '3.9'
+
+    # Step 3: Install all the Python "bricks" from our parts list.
+    - name: Install dependencies
+      # 'run:' means "run this command exactly as written in the terminal"
+      run: pip install -r requirements.txt
+    
+    # Step 4: Do a "spell check" on our code.
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        # Run the flake8 spell checker on our whole project.
+        flake8 . --count --show-source --statistics
